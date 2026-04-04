@@ -1,0 +1,58 @@
+- name: Configure backend service
+  hosts: backend
+  become: yes
+  tasks:
+   - name: Disable default nodejs
+     ansible.builtin.command: dnf module disable nodejs -y
+   - name: Enable nodejs 20 version
+     ansible.builtin.command: dnf module enable nodejs:20 -y
+   - name: Install nodejs
+     ansible.builtin.dnf:
+      name: {{ item }}
+      state: present
+     loop:
+      - nodejs
+      - mysql
+   - name: Create app user
+     ansible.builtin.command: useradd expense
+   - name: Remove default contents in directories
+     ansible.builtin.file:
+      path: {{ item }}
+      state: absent
+     loop: 
+      - /app
+      - /tmp/backend.zip
+   - name: Download code
+     ansible.builtin.get_url:
+      url: https://expense-joindevops.s3.us-east-1.amazonaws.com/expense-backend-v2.zip
+      dest: /tmp/backend.zip
+   - name: Create App directory
+     ansible.builtin.file:
+      path: /app
+      state: directory
+   - name: Unzip code
+     ansible.builtin.unarchive:
+      src: /tmp/backend.zip
+      dest: /app
+      remote_src: yes
+   - name: change directory to App directory
+     ansible.builtin.command: cd /app
+   - name: Install nodejs dependencies
+     community.general.npm:
+      path: /app
+   - name: Configure service file.
+     ansible.builtin.copy:
+      src: ./backend.service
+      dest: /etc/systemd/system/backend.service
+   - name: Reload daemon, enable and start service
+     ansible.builtin.systemd_service:
+      name: backend
+      state: started
+      enabled: true
+      daemon_reload: true
+   - name: Load schemas to database
+     ansible.builtin.command: mysql -h mysql.rscloudservices.icu -uroot -pExpenseApp@1 < /app/schema/backend.sql
+   - name: Restart backend
+     ansible.builtin.systemd_service:
+      name: backend
+      state: restarted
