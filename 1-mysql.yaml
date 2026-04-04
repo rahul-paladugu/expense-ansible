@@ -15,4 +15,4 @@
         state: started
         enable: yes
     - name: configure admin credentials to debug
-      ansbible.builtin.cmd: mysql_secure_installation --set-root-pass ExpenseApp@1
+      ansbible.builtin.command: mysql_secure_installation --set-root-pass ExpenseApp@1
