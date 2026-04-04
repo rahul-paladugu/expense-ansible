@@ -8,7 +8,7 @@
      ansible.builtin.command: dnf module enable nodejs:20 -y
    - name: Install nodejs
      ansible.builtin.dnf:
-      name: {{ item }}
+      name: "{{ item }}"
       state: present
      loop:
       - nodejs
@@ -17,7 +17,7 @@
      ansible.builtin.command: useradd expense
    - name: Remove default contents in directories
      ansible.builtin.file:
-      path: {{ item }}
+      path: "{{ item }}"
       state: absent
      loop: 
       - /app
