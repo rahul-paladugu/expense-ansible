@@ -51,7 +51,8 @@
       enabled: true
       daemon_reload: true
    - name: Load schemas to database
-     ansible.builtin.command: mysql -h mysql.rscloudservices.icu -uroot -pExpenseApp@1 < /app/schema/backend.sql
+     ansible.builtin.shell: 
+       mysql -h mysql.rscloudservices.icu -uroot -pExpenseApp@1 < /app/schema/backend.sql
    - name: Restart backend
      ansible.builtin.systemd_service:
       name: backend
