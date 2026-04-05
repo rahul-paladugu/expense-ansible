@@ -16,8 +16,8 @@
       rm -rf /usr/share/nginx/html/*
    - name: Remove old code downloaded for expense
      ansible.builtin.file:
-     path: /tmp/frontend.zip
-     state: absent
+      path: /tmp/frontend.zip
+      state: absent
    - name: Download frontend code
      ansible.builtin.get_url:
       url: https://expense-joindevops.s3.us-east-1.amazonaws.com/expense-frontend-v2.zip
