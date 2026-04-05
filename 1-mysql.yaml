@@ -1,6 +1,5 @@
 - name: Ansible playbook to configure mysql for expense project
-  hosts: local
-  connection: local
+  hosts: mysql
   become: yes
   tasks:
   # Install mysql-server
