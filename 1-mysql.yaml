@@ -10,9 +10,10 @@
         state: present
   # Enable and start mysql service
     - name: Start and enable mysqld service
-      ansible.builtin.systemd_service:
+      ansible.builtin.systemd:
         name: mysqld
         state: started
         enabled: yes
     - name: configure admin credentials to debug
-      ansible.builtin.command: mysql_secure_installation --set-root-pass ExpenseApp@1
+      ansible.builtin.shell: 
+       mysql_secure_installation --set-root-pass ExpenseApp@1
