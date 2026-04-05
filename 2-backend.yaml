@@ -14,7 +14,9 @@
       - nodejs
       - mysql
    - name: Create app user
-     ansible.builtin.command: useradd expense
+     ansible.builtin.user:
+      name: expense
+      state: present
    - name: Remove default contents in directories
      ansible.builtin.file:
       path: "{{ item }}"
