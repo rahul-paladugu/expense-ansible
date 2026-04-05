@@ -29,7 +29,7 @@
       remote_src: yes
    - name: Copy expense conf
      ansible.builtin.copy:
-      src: ./expense.conf
+      src: /home/ec2-user/expense-ansible/expense.conf
       dest: /etc/nginx/default.d/expense.conf
       remote_src: yes
    - name: Restart nginx
